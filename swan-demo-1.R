@@ -1,0 +1,80 @@
+#      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+#⠀          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣀⣀⠀⠀⠀⠀
+#⠀          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡿⠛⠻⣿⡟⠻⣧⠀⠀⠀
+#⠀     ⠀     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠙⠻⢿⣿⡀⠀⠀
+#⠀     ⠀     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀⠀⠀⠀⠈⠉⠁⠀
+#⠀⠀          ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣀⡀⠀⠀⠀⠀⢿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀
+#⠀     ⠀     ⠀⠀⠀⠀⠀⠘⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⡈⠙⣿⣧⠀⠀⠀⠀⠀⠀⠀
+#⠀     ⠀     ⠀⠀⡀⠀⠀⠐⢦⣤⣍⣉⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⢸⣿⣇⠀⠀⠀⠀⠀⠀
+#⠀     ⠀     ⠀⣀⣿⣷⣶⣄⠀⢈⣉⣛⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⣼⣿⣿⠀⠀⠀⠀⠀⠀
+#⠀     ⠀     ⠀⠈⢛⣿⣿⣿⣷⣄⡉⠛⠿⠿⠿⠿⠿⠟⠛⢉⣠⣾⣿⣿⡿⠀⠀⠀⠀⠀⠀
+#⠀     ⠀     ⠀⠀⠈⠉⠙⠿⣿⣿⣿⣷⣶⣶⣶⣶⣶⣶⣿⣿⣿⣿⣿⠟⠁⠀⠀⠀⠀⠀⠀
+#⠀     ⠀     ⣤⣶⣀⠀⠀⠀⠈⠉⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠛⠉⠀⠀⠀⢀⣀⣶⡄⠀⠀
+#⠀     ⠀     ⠀⠉⠙⠛⠛⠻⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠶⠾⠟⠛⠛⠋⠉⠀⠀⠀
+#
+#  ___ __      __ ___  _  _           _                       _   
+# / __|\ \    / //   \| \| |       __| | ___  _ __   ___     / |  
+# \__ \ \ \/\/ / | - || .  |      / _` |/ -_)| '  \ / _ \    | |  
+# |___/  \_/\_/  |_|_||_|\_|      \__/_|\___||_|_|_|\___/    |_|  
+
+
+# Define constants
+
+cd <- 0.62
+g <- 9.81
+b <- 0.5
+
+# Flow in m3/2 when h = 100 mm
+
+h1 <- 100 / 1000
+q1 <- (2 / 3) * cd * sqrt(2 * g) * b * h1^(3 / 2)
+q1
+
+# First hour: h=150mm, second hour: h = 136mm, last three hours: h = 75mm
+# Total delivered volume in m3
+
+h2 <- c(150, 136, 75) / 1000
+q2 <- (2 / 3) * cd * sqrt(2 * g) * b * h2^(3 / 2)
+t <- (1:3) * 3600
+sum(q2 * t)
+
+# Plot the flow in m3/s for all heights between 50mm and 500mm
+
+h3 <- (50:300) / 1000
+q3 <- (2 / 3) * cd * sqrt(2 * g) * b * h3^(3 / 2)
+
+plot(h3, q3, type = "l",
+     xlab = "Height [m]", ylab = "Flow [m3/s]",
+     main = "Open Channel Flow, Cd = 0.62")
+abline(v = h2, col = "grey")
+abline(h = q2, col = "grey")
+points(h2, q2, pch = 19, col = "blue")
+
+# Generate sequences
+
+h3 <- seq(from = .05, to = .3, by = .001)
+
+h3 <- seq(from = 0.05, to = 0.3, length.out = 100)
+
+# For-loop (not recommended)
+
+q3 <- vector()
+i <- 1
+
+for (h3 in 50:500) {
+  q3[i] <- (2 / 3) * cd * sqrt(2 * g) * b * (h3 / 1000)^(3 / 2)
+  i <- i + 1
+}
+
+
+# Create function
+
+channel_flow <- function(h, b, cd = 0.62, g = 9.81) {
+    (2 / 3) * cd * sqrt(2 * g) * b * h^(3 / 2)
+}
+
+channel_flow(h = 0.1, b = 0.5)
+
+# Flow on Mars
+channel_flow(h = 0.1, b = 0.5, g = 3.72)
+

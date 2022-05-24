@@ -1,0 +1,259 @@
+---
+title: 
+author: "Dr Peter Prevos"
+date: "24 May 2022, Washington DC"
+output: 
+    revealjs::revealjs_presentation:
+        theme: league
+        self_contained: false
+        highlight: zenburn
+        smart: true
+        css: style.css
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, dpi=300)
+```
+
+## {data-background="images/swan-title.png"}
+
+# Program
+<div class="cols" style="width: 60%;">
+
+- What is Data Science and What is Good Data Science?
+- Data Story Telling and Data Visualisation
+- Break: Refreshments and Networking
+- Building Your Data Science Toolkit
+- Interactive Coding Demo
+- Next steps, Summary, and Conclusion
+
+</div>
+<div class="cols" style="width: 40%;">
+![](images/swan-dive.jpg)
+<small>Swan Dive into Data Science</small>
+</div>
+
+## Objectives
+<div class="cols">
+1. Identify the skill elements of data science
+2. Evaluate data science proposals
+3. Design data visualisations using best practice rules
+5. Understand the benefits of using code to analyse data
+</div>
+<div class="cols">
+![](images/cute-swan-unicorn.svg)
+</div>
+
+# Introductions
+<small>Who does Peter Prevos think he is?</small>
+![](images/data-science-evolution.png){height=500}
+
+## Introductions
+![](https://cdn.sogosurvey.com/blog/wp-content/uploads/2012/10/istock_000019567533small1-300x199.jpg){height=300}
+
+[<small>`lucidmanager.org/r4h2o/swan/intro`</small>](https://lucidmanager.org/r4h2o/swan/intro/)
+
+# What is data science?
+![](images/sexiest-job.png)
+
+## Data is as old as human culture
+![](images/ishango.png)
+
+## Data Science Unicorns
+![](images/conway.png)
+
+## Activity
+<div class="cols">
+
+- What other skills does a data scientist need to have?
+- What would you include in a data scientist position description?
+- [Miro Board](https://miro.com/app/board/uXjVOyo8ZfY=/)
+
+</div>
+
+<div class="cols">
+![](https://miro.medium.com/max/1400/1*xuSyKJ45w20B-jBLTaRing.jpeg)
+
+<small>medium.com</small>
+</div>
+
+# What is good data science?
+![](images/vitruvius.png)
+
+## Useful
+![](images/feedback-loop.png)
+
+## Sound
+<div class="cols">
+- Validity and reliability
+- Replicability and reproducibility
+- Data science ethics
+
+</div>
+<div class="cols">
+![](https://upload.wikimedia.org/wikipedia/commons/a/ae/Mad_scientist.svg)
+</div>
+
+## Replicability and Reproducibility
+<div class="cols">
+![](images/replicable.png)
+<small>Business Efficiency</small>
+</div>
+<div class="cols">
+![](images/reproducible.png)
+<small>Quality Assurance</small>
+</div>
+
+## Data Science Ethics
+<div class="cols">
+- Informed consent
+- Avoiding harm in collecting data
+- Algorithmic fairness
+- Don't be creepy
+
+</div>
+<div class="cols">
+![](https://stopsmartmeters.org/wp-content/uploads/2011/06/DSC_2251-1024x680.jpg){height=400}
+<small>Source: [stopsmartmeters.org](https://stopsmartmeters.org/)</small>
+</div>
+
+## Data Science Ethics Conundrum
+A water utility has collected a lot of information about their customers and their water consumption. Climate change severely impacts the water utility's ability to meet the needs of customers and they have implemented legally enforceable water restrictions. A data scientists develops a proposal to use digital metering data to catch people who breach restrictions. 
+
+You are on the Board of this water utility. Do you accept the proposal?
+
+Write your responses on the [Miro Board](https://miro.com/app/board/uXjVOy5M3nM=/)
+
+# Story-Telling With Data
+![](images/lego-visualisation.jpg)
+
+## Exploratory Analysis
+```{r, echo=FALSE, fig.width=6, fig.height=4}
+library(tidyverse)
+library(datasauRus)
+
+filter(datasaurus_dozen, dataset != "slant_up") %>%
+    ggplot(aes(x = x, y = y)) +
+    geom_point(col = "dodgerblue4") +
+    theme_void(base_size = 12) +
+    theme(legend.position = "none") +
+    facet_wrap(~dataset, ncol = 6)
+```
+
+## Ugly Data
+![](images/pollock-schurr.png){height=600}
+
+## Data-Pixel Ratio
+![](images/data-pixel-ratio.png)
+
+## The Grammar of Graphics
+![](images/grammar-of-graphics.png){height=500}
+
+## {data-background="images/visualisations.jpg"}
+
+## Using Colours
+![](images/colorbrewer.png){height=400}
+
+Go to [colorbrewer.org](https://colorbrewer2.org/) to explore colour schemes.
+
+## Data Visualisation Workshop
+<div class="cols">
+- Can you improve this visualisation?
+- What is the story it tells?
+- How can you increase the data-pixel ratio?
+- [Miro board](https://miro.com/app/board/uXjVOy4glR0=/)
+</div>
+<div class="cols">
+![](images/bananas.png)
+</div>
+
+# Break: Refreshments and Networking
+![](https://miro.medium.com/max/980/1*b1IsY6YX7Wb-ngq6otMPKw.jpeg){height=500}
+
+## Improve Coding Dexterity through Handcrafts
+
+Go to [origami.plus/origami-swan](https://origami.plus/origami-swan) and fold a swan
+
+![](images/origami-swan.jpg){height=400}
+
+# Building Your Data Science Toolkit
+![](images/workflow.png)
+
+## Spreadsheets
+![](images/reverse-engineer-spreadsheet.jpg)
+
+## Business Intelligence Tools
+![](https://powerbicdn.azureedge.net/mediahandler/blog/legacymedia/6153.dashboard_2D00_iPad.png){height=500}
+
+<small>source: microsoft.com</small>
+
+## R Code
+```{r echo=TRUE}
+library(readr)
+library(dplyr)
+
+labdata <- readr::read_csv("data/labdata.csv")
+
+group_by(labdata, Measure) %>% 
+    summarise(min = min(Result),
+              mean = mean(Result),
+              sd = sd(Result))
+```
+
+## Python Code
+```{python echo=TRUE}
+import pandas as pd
+import numpy as np 
+
+labdata = pd.read_csv('data/labdata.csv')
+ 
+labdata.groupby("Measure")["Result"].agg([np.min, np.mean, np.std])
+```
+
+# Interactive Coding Demo
+![](images/rstudio.png)
+
+
+## Demo 1
+![](images/open-channel.jpg)
+
+## Demo 1
+<div class="cols">
+$$Q = \frac{2}{3} C_d \sqrt{2g} \; bh^\frac{3}{2}$$
+
+- $Q$: Discharge
+- $C_d$: Discharge coefficient
+- $g$: Acceleration of gravity
+- $b$: Crest length
+- $h$: Head above crest level
+</div>
+<div class="cols">
+![](images/rectangular-weir.png)
+
+- $b=0.5$ m
+- $h=0.1$ m
+- $C_d=0.6$
+- $g=9.81$ m/s^2^
+</div>
+
+## Demo 3: Literate Programming
+![](images/reproducible-research-pipeline.png)
+
+# Next steps, Summary, and Conclusion
+![](images/r-learning-curve.jpg)
+
+## Next Steps
+<div class="cols">
+1. Understand the principles
+2. Code by hand
+3. Create simple programs
+4. Practice
+5. Ask for help
+6. Build projects
+7. Help others
+</div>
+<div class="cols">
+![](images/r4h2o-cover-3d.png)
+</div>
