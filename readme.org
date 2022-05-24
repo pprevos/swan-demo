@@ -1,0 +1,5 @@
+#+title: Data Science Unicorn Breeding Program: Teaching Coding Skills to Water Professionals
+
+This repository contains all data, code and images used in the [[https://www.swan-2022.com/yp-workshop.html][Data Science Unicorn Breeding Program: Teaching Coding Skills to Water Professionals]] at the 2022 SWAN conference in Washington DC.
+
+[[file:images/swan-title.png]]
